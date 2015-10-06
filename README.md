@@ -28,22 +28,28 @@ admin.createUser('leander', 'unhackable password', function (err) {
 	// Added a user!	
 })
 
+admin.changePassword('leander', 'new unhackable password', function (err) {
+	// Changed the password for leander.
+})
+
 admin.createDatabase('my_documents', function (err) {
 	// New database called 'my_documents' created!
+})
 
-	admin.grantMembership('leander', 'my_documents', function (err) {
-		// User 'leander' was given membership access to my_documents.
-		admin.revokeMembership('leander', 'my_documents', function (err) {
-			// User 'leander' is no longer a member of my_documents :(
-		})
-	})
+admin.grantMembership('leander', 'my_documents', function (err) {
+	// User 'leander' was given membership access to my_documents.
+})
 
-	admin.grantAdmin('leander', 'my_documents', function (err) {
-		// User 'leander' was given admin access to my_documents.
-		admin.revokeAdmin('leander', 'my_documents', function (err) {
-			// User 'leander' is no longer an admin of my_documents :(
-		})
-	})
+admin.revokeMembership('leander', 'my_documents', function (err) {
+	// User 'leander' is no longer a member of my_documents :(
+})
+
+admin.grantAdmin('leander', 'my_documents', function (err) {
+	// User 'leander' was given admin access to my_documents.
+})
+
+admin.revokeAdmin('leander', 'my_documents', function (err) {
+	// User 'leander' is no longer an admin of my_documents :(
 })
 
 admin.removeUser('leander', function (err) {
@@ -70,7 +76,7 @@ Verifies that the username/password combination is valid.
 #### addUser(username, password, cb)
 Adds a user with the given username and password.
 
-#### changePass(username, password, cb)
+#### changePassword(username, password, cb)
 Edits the username to have a new password.
 
 #### removeUser(username, cb)
