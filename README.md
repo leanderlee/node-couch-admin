@@ -22,7 +22,11 @@ Feel free to look at examples below to see how easy it is to use this library!
 ## Examples
 
 ```js
-var admin = require('couch-admin')('http://localhost:5984', 'admin', 'mysecretpassword');
+var admin = require('couch-admin')({
+	url: 'http://localhost:5984',
+	user: 'admin',
+	pass: 'mysecretpassword'
+});
 
 admin.createUser('leander', 'unhackable password', function (err) {
 	// Added a user!	
