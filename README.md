@@ -33,15 +33,35 @@ free to learn more about these calls at the resources linked below.
 
 ### User controls
 
-#### couchAdmin.verifyUser(username, password, cb)
-#### couchAdmin.addUser(username, password, cb)
-#### couchAdmin.changePass(username, password, cb)
-#### couchAdmin.removeUser(username, cb)
+#### verifyUser(username, password, cb)
+Verifies that the username/password combination is valid.
+
+#### addUser(username, password, cb)
+Adds a user with the given username and password.
+
+#### changePass(username, password, cb)
+Edits the username to have a new password.
+
+#### removeUser(username, cb)
+Removes the user with the given username.
 
 ## Grant permissions to databases
 
-#### couchAdmin.grantMembership(username, database, cb)
-#### couchAdmin.grantAdmin(username, database, cb)
-#### couchAdmin.revokeMembership(username, cb)
-#### couchAdmin.revokeAdmin(username, cb)
+#### grantMembership(username, database, cb)
+Adds username as a member of the database. Members will have read/write access to the data in the database, but cannot change the design docs.
+
+#### grantAdmin(username, database, cb)
+Adds username as an admin of the database. Admins will have read/write access to the data in the database, and also be able to add, edit and remove design docs.
+
+#### revokeMembership(username, cb)
+Removes username as a member of the database.
+
+#### revokeAdmin(username, cb)
+Removes username as an admin of the database.
+
+
+## Contributing & Bugs
+Feel free to file an issue if you notice there are problems, and submit pull requests to contribute to this simple little library!
+
+
 
