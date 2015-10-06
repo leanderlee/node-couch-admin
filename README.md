@@ -26,6 +26,7 @@ var admin = require('couch-admin')({
 	url: 'http://localhost:5984',
 	user: 'admin',
 	pass: 'mysecretpassword'
+	authentication_db: '_users', // Optional
 });
 
 admin.createUser('leander', 'unhackable password', function (err) {
