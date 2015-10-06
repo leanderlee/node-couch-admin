@@ -74,6 +74,10 @@ free to learn more about these calls at the resources linked below.
 
 ### User controls
 
+
+#### getUser(username, cb)
+Gets the user with the given username.
+
 #### verifyUser(username, password, cb)
 Verifies that the username/password combination is valid.
 
