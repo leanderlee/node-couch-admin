@@ -6,5 +6,3 @@ node_js:
   - "0.8"
 services:
   - couchdb
-before_script:
-  - curl -X PUT localhost:5984/cdb-admin-test
