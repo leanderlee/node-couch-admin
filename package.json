@@ -1,0 +1,33 @@
+{
+  "name": "couch-admin",
+  "version": "1.0.0",
+  "description": "Node.js library to manage users on CouchDB.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leanderlee/node-couch-admin.git"
+  },
+  "keywords": [
+    "node",
+    "couchdb",
+    "admin",
+    "users",
+    "auth",
+    "couch",
+    "user",
+    "manage",
+    "management"
+  ],
+  "author": "Leander Lee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leanderlee/node-couch-admin/issues"
+  },
+  "homepage": "https://github.com/leanderlee/node-couch-admin",
+  "dependencies": {
+    "request": "^2.64.0"
+  }
+}
