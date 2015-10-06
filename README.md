@@ -19,10 +19,41 @@ npm install couch-admin
 
 Feel free to look at examples below to see how easy it is to use this library!
 
-## Basic usage
+## Examples
 
 ```js
-var couchAdmin = require('couch-admin')('http://localhost:5984', 'admin', 'mysecretpassword');
+var admin = require('couch-admin')('http://localhost:5984', 'admin', 'mysecretpassword');
+
+admin.createUser('leander', 'unhackable password', function (err) {
+	// Added a user!	
+})
+
+admin.createDatabase('my_documents', function (err) {
+	// New database called 'my_documents' created!
+
+	admin.grantMembership('leander', 'my_documents', function (err) {
+		// User 'leander' was given membership access to my_documents.
+		admin.revokeMembership('leander', 'my_documents', function (err) {
+			// User 'leander' is no longer a member of my_documents :(
+		})
+	})
+
+	admin.grantAdmin('leander', 'my_documents', function (err) {
+		// User 'leander' was given admin access to my_documents.
+		admin.revokeAdmin('leander', 'my_documents', function (err) {
+			// User 'leander' is no longer an admin of my_documents :(
+		})
+	})
+})
+
+admin.removeUser('leander', function (err) {
+	// User 'leander' was deleted :(
+})
+
+admin.removeDatabase('my_documents', function (err) {
+	// Database 'my_documents' was deleted :(
+})
+
 ```
 
 ## API
@@ -45,7 +76,13 @@ Edits the username to have a new password.
 #### removeUser(username, cb)
 Removes the user with the given username.
 
-## Grant permissions to databases
+## Database controls
+
+#### createDatabase(database, cb)
+Adds a database (initially with no permissions.)
+
+#### removeDatabase(database, cb)
+Removes the database.
 
 #### grantMembership(username, database, cb)
 Adds username as a member of the database. Members will have read/write access to the data in the database, but cannot change the design docs.
