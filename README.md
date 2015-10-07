@@ -96,17 +96,6 @@ The database name for the config db of the CouchDB instance. (default: `_config`
 #### session_db
 The database name for the session db of the CouchDB instance. (default: `_session`)
 
-### Admin controls
-
-#### getAdmins(cb)
-Lists all of the admins on the instance.
-
-#### createAdmin(username, password, cb)
-Adds an admin with the given username and password.
-
-#### removeAdmin(username, cb)
-Deletes the admin with the given username.
-
 ### User controls
 
 #### getUser(username, cb)
