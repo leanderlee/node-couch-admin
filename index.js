@@ -10,7 +10,7 @@ function Admin (opts) {
   this.pass = opts.pass || 'mysecretpassword';
   this.user_id_prefix = opts.user_id_prefix || 'org.couchdb.user';
   this.user_db = opts.user_db || '_users';
-  this.config_db = opts.config_db || '_users';
+  this.config_db = opts.config_db || '_config';
   this.session_db = opts.session_db || '_session';
 
 }
@@ -18,36 +18,36 @@ function Admin (opts) {
 Admin.prototype._username = function (name) {
   return this.user_id_prefix + ':' + name;
 }
-Admin.prototype._request = function (method, url, data, headers, cb) {
+Admin.prototype._request = function (method, url, data, headers, cb, raw) {
   headers = headers || {};
   var opts = {
+    method: method,
     url: this.url + '/' + url,
-    auth: { user: this.user, pass: this.pass },
+    auth: this.users ? { user: this.user, pass: this.pass } : null,
     headers: headers,
+    body: data,
     json: true
   };
   request(opts, function (err, res, body) {
+    // console.log(opts, body)
     if (err) return cb(err);
-    if (res.statusCode >= 400) return cb({ error: true, status: res.statusCode });
+    if (res.statusCode >= 400) return cb(body);
+    if (raw) return raw(res, body);
     cb(null, body, res);
   })
-}
-
-Admin.prototype.createAdmin = function (user, pass, cb) {
-  this._request('PUT', this.config_db + '/admins/' + user, pass, null, cb);
-}
-Admin.prototype.removeAdmin = function (user, cb) {
-  this._request('DELETE', this.config_db + '/admins/' + user, null, null, cb);
-}
-Admin.prototype.getAdmins = function (cb) {
-  this._request('GET', this.config_db + '/admins/' + user, null, null, cb);
 }
 
 Admin.prototype.getUser = function (user, cb) {
   this._request('GET', this.user_db + '/' + this._username(user), null, null, cb);
 }
 Admin.prototype.verifyUser = function (user, password, cb) {
-  this._request('POST', this.session_db, { name: user, password: password }, null, cb);
+  this._request('POST', this.session_db, { name: user, password: password }, null, cb, function (res, body) {
+    var cookie = '';
+    if (res.headers && res.headers['set-cookie'] && res.headers['set-cookie'][0]) {
+      cookie = res.headers['set-cookie'][0].split(';')[0];
+    }
+    cb(null, cookie);
+  });
 }
 Admin.prototype.createUser = function (user, pass, cb) {
   this._request('PUT', this.user_db + '/' + this._username(user), {
@@ -61,7 +61,7 @@ Admin.prototype.changePassword = function (user, pass, cb) {
   var self = this;
   self.getUser(user, function (err, userObj) {
     if (err) return cb(err);
-    self._request('PUT', this.user_db + '/' + self._username(user), {
+    self._request('PUT', self.user_db + '/' + self._username(user), {
       name: user,
       type: 'user',
       roles: userObj.roles || [],
@@ -75,9 +75,9 @@ Admin.prototype.removeUser = function (user, cb) {
     if (err) return cb(err);
     var headers = null;
     if (userObj && userObj._rev) {
-      headers['If-Match'] = userObj._rev;
+      headers = { 'If-Match': userObj._rev };
     }
-    self._request('DELETE', this.user_db + '/' + self._username(user), null, headers, cb);
+    self._request('DELETE', self.user_db + '/' + self._username(user), null, headers, cb);
   })
 }
 
@@ -92,11 +92,12 @@ Admin.prototype.getPermissions = function (db, cb) {
   this._request('GET', db + '/_security', null, null, cb); 
 }
 Admin.prototype.grantMembership = function (user, db, cb) {
+  var self = this;
   self.getPermissions(db, function (err, perms) {
     if (err) return cb(err);
     var headers = null;
     if (perms && perms._rev) {
-      headers['If-Match'] = perms._rev;
+      headers = { 'If-Match': perms._rev };
     }
     perms.admins = perms.admins || { names: [], roles: [] };
     perms.members = perms.members || { names: [], roles: [] };
@@ -104,10 +105,11 @@ Admin.prototype.grantMembership = function (user, db, cb) {
     if (pos === -1) {
       perms.members.names.push(user);
     }
-    this._request('PUT', db + '/_security', perms, headers, cb);
+    self._request('PUT', db + '/_security', perms, headers, cb);
   });
 }
 Admin.prototype.revokeMembership = function (user, db, cb) {
+  var self = this;
   self.getPermissions(db, function (err, perms) {
     if (err) return cb(err);
     var headers = null;
@@ -120,10 +122,11 @@ Admin.prototype.revokeMembership = function (user, db, cb) {
     if (pos !== -1) {
       perms.members.names.splice(pos, 1);
     }
-    this._request('PUT', db + '/_security', perms, headers, cb);
+    self._request('PUT', db + '/_security', perms, headers, cb);
   });
 }
 Admin.prototype.grantAdmin = function (user, db, cb) {
+  var self = this;
   self.getPermissions(db, function (err, perms) {
     if (err) return cb(err);
     var headers = null;
@@ -136,10 +139,11 @@ Admin.prototype.grantAdmin = function (user, db, cb) {
     if (pos === -1) {
       perms.admins.names.push(user);
     }
-    this._request('PUT', db + '/_security', perms, headers, cb);
+    self._request('PUT', db + '/_security', perms, headers, cb);
   });
 }
 Admin.prototype.revokeAdmin = function (user, db, cb) {
+  var self = this;
   self.getPermissions(db, function (err, perms) {
     if (err) return cb(err);
     var headers = null;
@@ -152,7 +156,7 @@ Admin.prototype.revokeAdmin = function (user, db, cb) {
     if (pos !== -1) {
       perms.admins.names.splice(pos, 1);
     }
-    this._request('PUT', db + '/_security', perms, headers, cb);
+    self._request('PUT', db + '/_security', perms, headers, cb);
   });
 }
 
