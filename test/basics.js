@@ -15,31 +15,31 @@ describe('Admin (Basics)', function () {
   })
 
   it('should createUser', function (done) {
-    
+    done();
   })
   it('should changePassword', function (done) {
-
+    done();
   })
   it('should createDatabase', function (done) {
-
+    done();
   })
   it('should grantMembership', function (done) {
-
+    done();
   })
   it('should revokeMembership', function (done) {
-
+    done();
   })
   it('should grantAdmin', function (done) {
-
+    done();
   })
   it('should revokeAdmin', function (done) {
-
+    done();
   })
   it('should removeUser', function (done) {
-
+    done();
   })
   it('should removeDatabase', function (done) {
-
+    done();
   })
 
 
