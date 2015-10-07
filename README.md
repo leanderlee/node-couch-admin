@@ -1,4 +1,4 @@
-Couch Admin [![Build Status](https://travis-ci.org/leanderlee/node-couch-admin.png?branch=master)](http://travis-ci.org/leanderlee/couch-admin)  [![NPM version](https://badge.fury.io/js/couch-admin.png)](http://badge.fury.io/js/couch-admin)
+Node.js Couch User Admin API [![Build Status](https://travis-ci.org/leanderlee/node-couch-admin.png?branch=master)](http://travis-ci.org/leanderlee/couch-admin)  [![NPM version](https://badge.fury.io/js/couch-admin.png)](http://badge.fury.io/js/couch-admin)
 ===============
 
 [![NPM](https://nodei.co/npm/couch-admin.png?downloads=true)](https://nodei.co/npm/couch-admin/)
