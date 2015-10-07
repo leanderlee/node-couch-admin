@@ -26,7 +26,7 @@ var admin = require('couch-admin')({
 	url: 'http://localhost:5984',
 	user: 'admin',
 	pass: 'mysecretpassword'
-	authentication_db: '_users', // Optional
+	user_db: '_users', // Optional
 });
 
 admin.createUser('leander', 'unhackable password', function (err) {
@@ -73,8 +73,41 @@ Unless otherwise specified, `cb` is a callback that contains errors in its first
 response as its second. The response comes from CouchDB, and varies depending on the call. Feel
 free to learn more about these calls at the resources linked below.
 
-### User controls
+### Init Options
 
+#### url
+The URL to the CouchDB instance. (default: `http://localhost:5984`)
+
+#### user
+The username for the admin of the CouchDB instance. (default: `admin`)
+
+#### pass
+The password for the admin of the CouchDB instance. (default: `mysecretpassword`)
+
+#### user_id_prefix
+The user id prefix for users. (default: `org.couchdb.user`)
+
+#### user_db
+The database name for the authentication db of the CouchDB instance. (default: `_users`)
+
+#### config_db
+The database name for the config db of the CouchDB instance. (default: `_config`)
+
+#### session_db
+The database name for the session db of the CouchDB instance. (default: `_session`)
+
+### Admin controls
+
+#### getAdmins(cb)
+Lists all of the admins on the instance.
+
+#### createAdmin(username, password, cb)
+Adds an admin with the given username and password.
+
+#### removeAdmin(username, cb)
+Deletes the admin with the given username.
+
+### User controls
 
 #### getUser(username, cb)
 Gets the user with the given username.
@@ -82,7 +115,7 @@ Gets the user with the given username.
 #### verifyUser(username, password, cb)
 Verifies that the username/password combination is valid.
 
-#### addUser(username, password, cb)
+#### createUser(username, password, cb)
 Adds a user with the given username and password.
 
 #### changePassword(username, password, cb)
