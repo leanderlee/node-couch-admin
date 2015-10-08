@@ -23,7 +23,7 @@ Admin.prototype._request = function (method, url, data, headers, cb, raw) {
   var opts = {
     method: method,
     url: this.url + '/' + url,
-    auth: this.users ? { user: this.user, pass: this.pass } : null,
+    auth: this.user ? { user: this.user, pass: this.pass } : null,
     headers: headers,
     body: data,
     json: true
