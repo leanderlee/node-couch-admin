@@ -6,8 +6,8 @@ function Admin (opts) {
   opts = opts || {};
 
   this.url = opts.url || 'http://localhost:5984';
-  this.user = opts.user || 'admin';
-  this.pass = opts.pass || 'mysecretpassword';
+  this.user = opts.user || '';
+  this.pass = opts.pass || '';
   this.user_id_prefix = opts.user_id_prefix || 'org.couchdb.user';
   this.user_db = opts.user_db || '_users';
   this.config_db = opts.config_db || '_config';
